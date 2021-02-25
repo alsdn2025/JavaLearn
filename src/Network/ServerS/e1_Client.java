@@ -1,6 +1,8 @@
 package Network.ServerS;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -26,8 +28,16 @@ public class e1_Client {
             bytes = message.getBytes(StandardCharsets.UTF_8);
             os.write(bytes);
             os.flush();
-            System.out.println("클라이언트 : 데이터 전송 완료!");
+            System.out.println("데이터 전송 완료!");
 
+            InputStream is = socket.getInputStream();
+            InputStreamReader isr = new InputStreamReader(is, StandardCharsets.UTF_8);
+            char[] inputData = new char[100];
+            isr.read(inputData);
+            System.out.println("응답 수신 완료!");
+            System.out.println("받은 데이터 : " + new String(inputData));
+
+            isr.close(); is.close(); os.close();
         }catch (IOException e ){
             e.printStackTrace();
         }

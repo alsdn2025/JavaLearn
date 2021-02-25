@@ -1,15 +1,19 @@
 package Network.ServerS;
 
+import javax.swing.plaf.synth.SynthTextAreaUI;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.Scanner;
 
 public class e1_Server {
     public static void main(String[] args) throws IOException {
-
+        Scanner scanner = new Scanner(System.in);
         ServerSocket serverSocket = new ServerSocket();
 //        serverSocket.bind(new InetSocketAddress("localhost",5001));
         serverSocket.bind(new InetSocketAddress("192.168.10.104",5001));
@@ -31,6 +35,15 @@ public class e1_Server {
             System.out.println("받은 데이터 내용 : " +
                     new String(bytes,0,readByteCount, StandardCharsets.UTF_8));
 
+
+            OutputStream os = socket.getOutputStream();
+            System.out.print("보낼 데이터 : ");
+            String str = scanner.nextLine();
+            OutputStreamWriter osw = new OutputStreamWriter(os,StandardCharsets.UTF_8);
+            osw.write(str); osw.flush();
+            System.out.println("전송 완료!");
+
+            socket.close(); is.close(); os.close(); osw.close();
         }
 
 //        if(!serverSocket.isClosed()){
